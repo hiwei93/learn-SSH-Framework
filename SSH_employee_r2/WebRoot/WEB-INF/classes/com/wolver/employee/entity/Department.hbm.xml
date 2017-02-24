@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.wolver.employee.entity.Department" table="department">
+		<id name="did" column="did" >
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="dname" column="dname" length="20"></property>
+		<property name="ddesc" column="ddesc" length="100"></property>
+		
+		<!-- 关联关系映射 -->
+		<!-- cascadee: 外键的级联关系；inverse: true放弃一对多的外键维护能力 -->
+		<set name="employees" cascade="delete" inverse="true">
+			<key column="dno"></key>
+			<one-to-many class="com.wolver.employee.entity.Employee"/>
+		</set>
+	</class>
+</hibernate-mapping>
