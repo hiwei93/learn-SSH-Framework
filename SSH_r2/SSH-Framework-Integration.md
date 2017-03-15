@@ -1,16 +1,16 @@
-#SSH框架整合
-##一、SSH知识点回顾
+# SSH框架整合
+## 一、SSH知识点回顾
 1. web层-->Struts2
 2. 业务层-->Spring
 3. 持久层-->Hibernate
 
-##二、SSH环境搭建
-###1. 引入相关jar包
+## 二、SSH环境搭建
+### 1. 引入相关jar包
 1. Struts2框架开发的相应的jar：（基本开发jar包）
 - apps-->struts2-blank.war下的jar包；
 - 了解的jar包：
-	1. srtuts2-convention-plugin-2.3.15.3.jar：struts2的注解开发jar包（按需）
-	2. struts2-spring-plugin-2.3.15.3.jar：Struts2用于整合Spring的jar包
+- 1. srtuts2-convention-plugin-2.3.15.3.jar：struts2的注解开发jar包（按需）；
+- 2. struts2-spring-plugin-2.3.15.3.jar：Struts2用于整合Spring的jar包。
 
 2. Hibernate 框架开发的相应的jar：（Hibernate3）
 - hibernate-distribution-3.6.10.Final\hibernate3.jar
@@ -20,7 +20,7 @@
 -  数据库驱动包：mysql-connector-java-5.1.25-bin.jar
 
 3. Spring框架开发的相应的jar：
-基本开发jar包（IOC所需）：
+**基本开发jar包（IOC所需）：**
 - spring-beans-3.2.5.RELEASE.jar
 - spring-context-3.2.5.RELEASE.jar
 - spring-core-3.2.5.RELEASE.jar
@@ -28,13 +28,13 @@
 - com.springsource.org.apache.log4j-1.2.15.jar：log4j 日志记录
 - com.springsource.org.apache.commons.logging-1.1.1.jar：整合其他日志系统
 
-AOP所需：
+**AOP所需：**
 - spring-aop-3.2.5.RELEASE.jar
 - spring-aspects-3.2.5.RELEASE.jar
 - com.springsource.org.aopalliance-1.0.0.jar
 - com.springsource.org.aspectj.weaver-1.6.8.RELEASE.jar
 
-其他：
+**其他：**
 - spring-tx-3.2.5.RELEASE.jar：事务管理
 - spring-jdbc-3.2.5.RELEASE.jar
 - spring-orm-3.2.5.RELEASE.jar：整合Hibernate
@@ -42,8 +42,8 @@ AOP所需：
 - spring-test-3.2.5.RELEASE.jar：整合jUnit
 - com.springsource.com.mchange.v2.c3p0-0.9.1.2.jar：连接池
 
-###2. 引入相应配置文件
-####1. Struts2框架的配置文件
+### 2. 引入相应配置文件
+#### 1. Struts2框架的配置文件
 web.xml
 ``` xml
   <!-- Struts2框架的核心过滤器 -->
@@ -58,12 +58,11 @@ web.xml
 ```
 struts.xml
 
-####2. Hibernate框架的配置文件
-hibernate.cfg.xml（该项目中可以省略）
+#### 2. Hibernate框架的配置文件
+- hibernate.cfg.xml（该项目中可以省略）
+- 数据库表映射文件
 
-数据库表映射文件
-
-####3. Spring配置文件
+#### 3. Spring配置文件
 web.xml
 ``` xml
   <!-- Spring 框架的核心监听器 -->
@@ -98,18 +97,18 @@ spring全部约束：
 </beans>
 ```
 
-####4. 其他配置文件
+#### 4. 其他配置文件
 log4j.properties
 
-###3. 创建包结构
+### 3. 创建包结构
 com.ssh
 - action
 - service
 - dao
 - entity
 
-##三、Struts2整合Spring
-###1. 创建页面
+## 三、Struts2整合Spring
+### 1. 创建页面
 addProduct.jsp
 ```
 <%@ taglib uri="/struts-tags" prefix="s" %>
@@ -131,8 +130,8 @@ addProduct.jsp
 	</s:form>
 ```
 
-###2. 编写Action、Service和DAO
-####1. Service层注入DAO层
+### 2. 编写Action、Service和DAO
+#### 1. Service层注入DAO层
 productService.java
 ``` java
 public class ProductService {	
@@ -145,7 +144,7 @@ public class ProductService {
 ```
 > 提供set方法即可注入；
 
-####2. Action层注入Service层
+#### 2. Action层注入Service层
 productAction.java
 ``` java
 public class ProductAction extends ActionSupport implements ModelDriven<Product>{
@@ -165,7 +164,7 @@ public class ProductAction extends ActionSupport implements ModelDriven<Product>
 ```
 > 模型驱动必须要实例化，即必须new！
 
-###3. 配置Action、Service和DAO
+### 3. 配置Action、Service和DAO
 Service和DAO交给Spring管理：applicationContext.xml
 ``` xml
 	<!-- 配置业务层的类 -->
@@ -214,10 +213,10 @@ struts.xml
 > 1. 此处action的class属性填写类在applicationContext.xml配置的id名；
 > 2. Spring创建action是单例的，要配置属性scope="prototype"。
 
-##四、Spring整合Hibernate
-###1. 创建数据库
+## 四、Spring整合Hibernate
+### 1. 创建数据库
 
-###2. 创建表与实体的映射文件
+### 2. 创建表与实体的映射文件
 在hibernate-mapping-3.0.dtd中获取 Hibernate约束
 Product.hbm.xml
 ``` xml
@@ -233,8 +232,8 @@ Product.hbm.xml
 </hibernate-mapping>
 ```
 
-###3. Spring整合Hibernate
-####1. 配置数据库连接参数
+### 3. Spring整合Hibernate
+#### 1. 配置数据库连接参数
 jdbc.properties
 ```
 jdbc.driverClass=com.mysql.jdbc.Driver
@@ -242,7 +241,8 @@ jdbc.url=jdbc:mysql://localhost:3306/ssh
 jdbc.username=root
 jdbc.password=root
 ```
-####2. 配置连接池：applicationContext.xml
+
+#### 2. 配置连接池：applicationContext.xml
 ``` xml
 	<!-- 引入外部属性文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties"/>
@@ -256,7 +256,7 @@ jdbc.password=root
 	</bean>
 ```
 
-####3. 配置Hibernate相关属性：applicationContext.xml
+#### 3. 配置Hibernate相关属性：applicationContext.xml
 ``` xml
 <!-- 配置Hibernate相关属性 -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -280,7 +280,7 @@ jdbc.password=root
 	</bean>
 ```
 
-####4. 编写DAO
+#### 4. 编写DAO
 使用Hibernate模板
 注入sessionFactory：applicationContext.xml
 ``` xml
@@ -299,7 +299,7 @@ public class ProductDao extends HibernateDaoSupport{
 ```
 > DAO层需要继承HibernateDaoSupport类
 
-####5. 事务管理
+#### 5. 事务管理
 1. 配置事务管理器：applicationContext.xml
 ``` xml
 	<!-- 配置事务管理器 -->
