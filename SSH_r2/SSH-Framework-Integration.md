@@ -110,7 +110,7 @@ com.ssh
 ## 三、Struts2整合Spring
 ### 1. 创建页面
 addProduct.jsp
-```
+``` xml
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <h1>保存商品的页面</h1>
 	<s:form action="product_save" method="post" namespace="/" theme="simple">
@@ -297,7 +297,26 @@ public class ProductDao extends HibernateDaoSupport{
 	}
 }
 ```
-> DAO层需要继承HibernateDaoSupport类
+> DAO层需要继承HibernateDaoSupport类；
+
+> 注：Hibernate4之后的版本将不再支持HibernateTemplate，则Dao类需要如下：
+``` xml
+public class ProductDaoImpl implements ProductDao {
+
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public Collection loadProductsByCategory(String category) {
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("from test.Product product where product.category=?")
+                .setParameter(0, category)
+                .list();
+    }
+}
+```
 
 #### 5. 事务管理
 1. 配置事务管理器：applicationContext.xml
